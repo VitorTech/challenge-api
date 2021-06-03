@@ -19,7 +19,7 @@ class BaseRepository implements RepositoryInterface
 
     protected array $tags;
 
-    protected ?string $auth_user_id;
+    protected ?string $authUserId;
 
     public function __construct(Cache $cache)
     {
@@ -29,7 +29,7 @@ class BaseRepository implements RepositoryInterface
 
         $this->tags = [$this->model->getTable()];
 
-        $this->auth_user_id = auth()->user()->id ?? null;
+        $this->authUserId = auth()->user()->id ?? null;
     }
 
     protected function model(): Model
@@ -45,7 +45,7 @@ class BaseRepository implements RepositoryInterface
             $this->model->getTable(),
             $columns,
             $relationships,
-            $this->auth_user_id,
+            $this->authUserId,
             'all'
         );
 
@@ -76,7 +76,7 @@ class BaseRepository implements RepositoryInterface
             $columns,
             $relationships,
             $page,
-            $this->auth_user_id,
+            $this->authUserId,
             'paginate'
         );
 
@@ -106,7 +106,7 @@ class BaseRepository implements RepositoryInterface
             $id,
             $columns,
             $relationships,
-            $this->auth_user_id,
+            $this->authUserId,
             'findById'
         );
 

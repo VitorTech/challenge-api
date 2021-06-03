@@ -13,9 +13,9 @@ trait UsesSingleton
 
     public static function getInstance(): object
     {
-        $self_class = self::class;
+        $selfClass = self::class;
 
-        self::$instance = self::$instance ?? new $self_class();
+        self::$instance = self::$instance ?? new $selfClass();
 
         return self::$instance;
     }

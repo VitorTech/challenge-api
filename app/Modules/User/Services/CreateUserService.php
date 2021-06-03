@@ -12,9 +12,9 @@ use Modules\User\Services\Contracts\CreateUserServiceInterface;
 
 class CreateUserService implements CreateUserServiceInterface
 {
-    private UserRepositoryInterface $_repository;
+    private UserRepositoryInterface $repository;
 
-    private array $_parameters;
+    private array $parameters;
 
     public function __construct()
     {
@@ -24,12 +24,12 @@ class CreateUserService implements CreateUserServiceInterface
     /**
      * Defines the repository instance
      *
-     * @param  mixed $_repository
+     * @param  mixed $repository
      * @return void
      */
-    public function setRepository(RepositoryInterface $_repository): void
+    public function setRepository(RepositoryInterface $repository): void
     {
-        $this->repository = $_repository;
+        $this->repository = $repository;
     }
     
     /**
@@ -38,9 +38,9 @@ class CreateUserService implements CreateUserServiceInterface
      * @param  mixed $_parameters
      * @return void
      */
-    public function setParameters(array $_parameters = []): void
+    public function setParameters(array $parameters = []): void
     {
-        $this->parameters = $_parameters;
+        $this->parameters = $parameters;
     }
     
     /**
@@ -54,7 +54,7 @@ class CreateUserService implements CreateUserServiceInterface
 
         $password = $this->parameters['attributes']['password'] ?? Str::random(8);
 
-        $attributes = $this->_setAttibutes($password);
+        $attributes = $this->setAttibutes($password);
 
         return $this->repository->create($attributes);
     }
@@ -87,7 +87,7 @@ class CreateUserService implements CreateUserServiceInterface
      * @param  mixed $password
      * @return array
      */
-    private function _setAttibutes(string $password): array
+    private function setAttibutes(string $password): array
     {
         $attributes = $this->parameters['attributes'];
 

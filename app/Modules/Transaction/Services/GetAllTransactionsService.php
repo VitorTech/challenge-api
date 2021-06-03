@@ -53,10 +53,10 @@ class GetAllTransactionsService implements ServiceInterface
 
     private function setColumns(): array
     {
-        $request_columns = request()->columns
+        $requestColumns = request()->columns
             ? explode(",", request()->columns)
             : null;
 
-        return $this->parameters["columns"] ?? ($request_columns ?? ["*"]);
+        return $this->parameters["columns"] ?? ($requestColumns ?? ["*"]);
     }
 }
