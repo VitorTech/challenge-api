@@ -70,9 +70,11 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     {
         DB::beginTransaction();
 
-        $this->_validateParameters();
-
         $data = $this->parameters['attributes'];
+
+        if (!isset($data['is_request'])) {
+            $this->_validateParameters();
+        }
 
         $payer = $this->_getUser($data['payer']);
         $payee = $this->_getUser($data['payee']);
@@ -121,10 +123,12 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     
     /**
      * Checks if payer has sufficient balance to proceed. 
-     * Otherwise, returns an error.
+     * Otherwise, throws an error.
      *
      * @param  mixed $payer
      * @param  mixed $value
+     * 
+     * @throws Error If customer doesn't has enough balance.
      * @return void
      */
     private function _checkCustomerBalance(User $payer, float $value) 
@@ -135,9 +139,11 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     }
     
     /**
-     * Check if payer is a customer. Otherwise, returns an error.
+     * Check if payer is a customer. Otherwise, throws an error.
      *
      * @param  mixed $payer
+     * 
+     * @throws Error If Payer is not a customer.
      * @return void
      */
     private function _validatePayerType(User $payer): void
@@ -153,7 +159,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * @param  mixed $payer
      * @param  mixed $payee
      * @param  mixed $value
-     * @return void
+     * @return Transaction
      */
     private function _createTransaction(
         User $payer, User $payee, float $value
@@ -192,7 +198,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * Handle the transfer status response
      *
      * @param  mixed $response
-     * @return void
+     * @return string
      */
     private function _handleTransferStatusResponse($response): string
     {
@@ -208,8 +214,10 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Find and returns an user by ID.
      *
-     * @param  string $id
-     * @return mixed
+     * @param string $id
+     * 
+     * @throws Error If Customer or Shopkeeper were not found.
+     * @return User
      */
     private function _getUser(string $id): ?User 
     {
@@ -224,7 +232,8 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     
     /**
      * Validate all the request parameters.
-     *
+     * 
+     * @throws Error If parameters validation fail.
      * @return void
      */
     private function _validateParameters(): void
@@ -242,7 +251,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
 
         if ($validator->fails()) {
             throw new Error(
-                "The " . $validator->errors()->first() . " is incorrect"
+                "The " . $validator->errors()->first() . " is incorrect", 422
             );
         }
     }
@@ -253,7 +262,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * @param  mixed $payee
      * @return void
      */
-    private function _notifyPayee(User $payee)
+    private function _notifyPayee(User $payee): void
     {
         Queue::push(new CreatedTransactionJob($payee));
     }

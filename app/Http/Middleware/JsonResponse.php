@@ -5,6 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
+/**
+ * Handle HTTP requests and changes the response as necessary.
+ * 
+ * @author Vitor Ferreira <vitorg_s@hotmail.com>
+ */
 class JsonResponse
 {
     /**
@@ -19,6 +24,11 @@ class JsonResponse
     {
         $response = $next($request);
         $statusCode = $response->getStatusCode();
+
+        if ($request->method() == 'POST' && $statusCode == 200) {
+            $statusCode = 201;
+        }
+        
         try {
             $body = $response->content();
         } catch (\Throwable $th) {
