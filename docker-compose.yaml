@@ -1,0 +1,43 @@
+version: '3.0'
+
+services:
+  db:
+    container_name: challenge-db-postgres
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=root
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - ./_docker/database/data:/var/lib/postgresql/data
+      - ./_docker/database/scripts:/scripts
+      - ./_docker/database/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+  db_redis:
+    container_name: challenge-db-redis
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    restart: always
+    networks:
+      - app-network
+  api:
+    container_name: challenge-api
+    image: ocnascimento/php8-lumen:1.1
+    ports:
+      - '8888:80'
+    volumes:
+      - ./:/var/www
+      - ./_docker/etc/apache2:/etc/apache2
+      - ./_docker/etc/supervisor:/etc/supervisor
+    restart: always
+    depends_on:
+      - db
+      - db_redis
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
