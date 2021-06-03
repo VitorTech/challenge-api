@@ -10,6 +10,7 @@ use Modules\Transaction\Repositories\Contracts\TransactionRepositoryInterface;
 use Modules\Transaction\Services\Contracts\CreateTransactionServiceInterface;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Support\Statuses\Transaction as StatusesTransaction;
 use Illuminate\Support\Facades\Queue;
 
 use Illuminate\Support\Facades\DB;
@@ -181,7 +182,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
         ); 
         
         if ($response->failed()) {
-            return 'TRANSACTION_FAILED';
+            return StatusesTransaction::TRANSACTION_FAILED;
         }
 
         return $this->_handleTransferStatusResponse($response->json());
@@ -200,7 +201,8 @@ class CreateTransactionService implements CreateTransactionServiceInterface
         }
 
         return $response['message'] == 'Autorizado' ? 
-        'TRANSACTION_SUCCEEDED' : 'TRANSACTION_FAILED';
+            StatusesTransaction::TRANSACTION_SUCCEEDED: 
+            StatusesTransaction::TRANSACTION_FAILED;
     }
     
     /**
@@ -246,7 +248,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     }
     
     /**
-     * Notifies the payee about with an SMS message about the transaction.
+     * Notifies the payee with an SMS message about the transaction.
      *
      * @param  mixed $payee
      * @return void
