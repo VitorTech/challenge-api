@@ -54,7 +54,7 @@ class CreateUserService implements CreateUserServiceInterface
 
         $password = $this->parameters['attributes']['password'] ?? Str::random(8);
 
-        $attributes = $this->setAttibutes($password);
+        $attributes = $this->_setAttibutes($password);
 
         return $this->repository->create($attributes);
     }
@@ -63,13 +63,16 @@ class CreateUserService implements CreateUserServiceInterface
     {
         $attributes = $this->parameters['attributes'];
 
-        $validator = Validator::make($attributes, [
-            'fullname' => 'required',
-            'email' => 'required|unique:users',
-            'document' => 'required|unique:users',
-            'password' => 'required',
-            'type' => 'required'
-        ]);
+        $validator = Validator::make(
+            $attributes, 
+            [
+                'fullname' => 'required',
+                'email' => 'required|unique:users',
+                'document' => 'required|unique:users',
+                'password' => 'required',
+                'type' => 'required'
+            ]
+        );
 
         if ($validator->fails()) {
             throw new Error(
@@ -84,7 +87,7 @@ class CreateUserService implements CreateUserServiceInterface
      * @param  mixed $password
      * @return array
      */
-    private function setAttibutes(string $password): array
+    private function _setAttibutes(string $password): array
     {
         $attributes = $this->parameters['attributes'];
 

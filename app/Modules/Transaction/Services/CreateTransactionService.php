@@ -184,7 +184,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Checks for transfer status in a external authorizer.
      *
-     * @return void
+     * @return string
      */
     private function _checkForTransferStatus(): string
     {

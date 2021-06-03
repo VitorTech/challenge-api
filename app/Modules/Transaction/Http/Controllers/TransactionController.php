@@ -18,7 +18,7 @@ class TransactionController extends Controller
     /**
      * Store a transaction in storage.
      *
-     * @param  mixed $request
+     * @param mixed $request Http Request content
      * 
      * @return Transaction
      */
