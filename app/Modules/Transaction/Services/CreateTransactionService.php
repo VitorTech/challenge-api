@@ -24,9 +24,9 @@ use Modules\User\Repositories\Contracts\UserRepositoryInterface;
  */
 class CreateTransactionService implements CreateTransactionServiceInterface
 {
-    private TransactionRepositoryInterface $_repository;
+    private TransactionRepositoryInterface $repository;
 
-    private array $_parameters;
+    private array $parameters;
     
     /**
      * Construct service function.
@@ -46,9 +46,9 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * 
      * @return void
      */
-    public function setRepository(RepositoryInterface $_repository): void
+    public function setRepository(RepositoryInterface $repository): void
     {
-        $this->repository = $_repository;
+        $this->repository = $repository;
     }
     
     /**
@@ -58,9 +58,9 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * 
      * @return void
      */
-    public function setParameters(array $_parameters = []): void
+    public function setParameters(array $parameters = []): void
     {
-        $this->parameters = $_parameters;
+        $this->parameters = $parameters;
     }
     
     /**
@@ -75,26 +75,26 @@ class CreateTransactionService implements CreateTransactionServiceInterface
         $data = $this->parameters['attributes'];
 
         if (!isset($data['is_request'])) {
-            $this->_validateParameters();
+            $this->validateParameters();
         }
 
-        $payer = $this->_getUser($data['payer']);
-        $payee = $this->_getUser($data['payee']);
+        $payer = $this->getUser($data['payer']);
+        $payee = $this->getUser($data['payee']);
 
-        $this->_validatePayerType($payer);
+        $this->validatePayerType($payer);
 
-        $this->_checkCustomerBalance($payer, $data['value']);
+        $this->checkCustomerBalance($payer, $data['value']);
 
-        $transaction = $this->_createTransaction($payer, $payee, $data['value']);
+        $transaction = $this->createTransaction($payer, $payee, $data['value']);
 
         if (isset($transaction['id'])) {
-            $this->_decrementPayerBalance($payer, $data['value']);   
-            $this->_incrementPayeeBalance($payee, $data['value']);   
+            $this->decrementPayerBalance($payer, $data['value']);   
+            $this->incrementPayeeBalance($payee, $data['value']);   
         }
 
         DB::commit();
 
-        $this->_notifyPayee($payee);
+        $this->notifyPayee();
 
         return $transaction;
     }
@@ -107,7 +107,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * 
      * @return void
      */
-    private function _decrementPayerBalance(User $payer, float $value): void
+    private function decrementPayerBalance(User $payer, float $value): void
     {
         $payer->decrement('balance', $value);
     }
@@ -120,7 +120,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * 
      * @return void
      */
-    private function _incrementPayeeBalance(User $payee, float $value): void
+    private function incrementPayeeBalance(User $payee, float $value): void
     {
         $payee->increment('balance', $value);
     }
@@ -135,7 +135,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * @throws Error If customer doesn't has enough balance.
      * @return void
      */
-    private function _checkCustomerBalance(User $payer, float $value) 
+    private function checkCustomerBalance(User $payer, float $value) 
     {
         if ($payer->balance == 0 || $payer->balance < $value) {
             throw new Error('Insufficient customer balance', 400);
@@ -150,7 +150,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * @throws Error If Payer is not a customer.
      * @return void
      */
-    private function _validatePayerType(User $payer): void
+    private function validatePayerType(User $payer): void
     {
         if ($payer->type == 'shopkeeper') {
             throw new Error('Payer must be a customer', 400);
@@ -166,10 +166,10 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * 
      * @return Transaction
      */
-    private function _createTransaction(
+    private function createTransaction(
         User $payer, User $payee, float $value
     ): Transaction {
-        $status = $this->_checkForTransferStatus();
+        $status = $this->checkForTransferStatus();
 
         return $this->repository->create(
             [
@@ -186,7 +186,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      *
      * @return string
      */
-    private function _checkForTransferStatus(): string
+    private function checkForTransferStatus(): string
     {
         $response = Http::get(
             'https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6'
@@ -196,7 +196,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
             return StatusesTransaction::TRANSACTION_FAILED;
         }
 
-        return $this->_handleTransferStatusResponse($response->json());
+        return $this->handleTransferStatusResponse($response->json());
     }
     
     /**
@@ -206,7 +206,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * 
      * @return string
      */
-    private function _handleTransferStatusResponse($response): string
+    private function handleTransferStatusResponse($response): string
     {
         if (!isset($response['message'])) {
             return 'TRANSACTION_FAILED';
@@ -225,7 +225,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * @throws Error If Customer or Shopkeeper were not found.
      * @return User
      */
-    private function _getUser(string $id): ?User 
+    private function getUser(string $id): ?User 
     {
         $user = $this->user_repository->findById($id);
 
@@ -242,7 +242,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * @throws Error If parameters validation fail.
      * @return void
      */
-    private function _validateParameters(): void
+    private function validateParameters(): void
     {
         $attributes = $this->parameters["attributes"];
 
@@ -269,8 +269,8 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * 
      * @return void
      */
-    private function _notifyPayee(User $payee): void
+    private function notifyPayee(): void
     {
-        Queue::push(new CreatedTransactionJob($payee));
+        Queue::push(new CreatedTransactionJob());
     }
 }
