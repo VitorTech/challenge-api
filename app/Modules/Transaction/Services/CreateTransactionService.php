@@ -42,7 +42,8 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Set service repository
      *
-     * @param  mixed $_repository
+     * @param mixed $_repository ServiceRepository
+     * 
      * @return void
      */
     public function setRepository(RepositoryInterface $_repository): void
@@ -53,7 +54,8 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Set service parameters
      *
-     * @param  mixed $_parameters
+     * @param mixed $_parameters ServiceParameters
+     * 
      * @return void
      */
     public function setParameters(array $_parameters = []): void
@@ -100,11 +102,12 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Discounts a determined value from especific user balance.
      *
-     * @param  mixed $payer
-     * @param  mixed $value
+     * @param User  $payer $payer model instance
+     * @param float $value Value to decrement
+     * 
      * @return void
      */
-    private function _decrementPayerBalance(User $payer, $value): void
+    private function _decrementPayerBalance(User $payer, float $value): void
     {
         $payer->decrement('balance', $value);
     }
@@ -112,11 +115,12 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Increment a determined value to specific user balance.
      *
-     * @param  mixed $payee
-     * @param  mixed $value
+     * @param User  $payee Payee model instance 
+     * @param float $value Value to increment
+     * 
      * @return void
      */
-    private function _incrementPayeeBalance(User $payee, $value): void
+    private function _incrementPayeeBalance(User $payee, float $value): void
     {
         $payee->increment('balance', $value);
     }
@@ -125,8 +129,8 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * Checks if payer has sufficient balance to proceed. 
      * Otherwise, throws an error.
      *
-     * @param  mixed $payer
-     * @param  mixed $value
+     * @param User  $payer Payer model instance
+     * @param float $value Transaction value
      * 
      * @throws Error If customer doesn't has enough balance.
      * @return void
@@ -141,7 +145,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Check if payer is a customer. Otherwise, throws an error.
      *
-     * @param  mixed $payer
+     * @param User $payer Payer model instance
      * 
      * @throws Error If Payer is not a customer.
      * @return void
@@ -156,9 +160,10 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Process and save the transaction.
      *
-     * @param  mixed $payer
-     * @param  mixed $payee
-     * @param  mixed $value
+     * @param User  $payer Payer model instance
+     * @param User  $payee Payee model instance
+     * @param float $value Transaction value
+     * 
      * @return Transaction
      */
     private function _createTransaction(
@@ -197,7 +202,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Handle the transfer status response
      *
-     * @param  mixed $response
+     * @param mixed $response Status Response
      * 
      * @return string
      */
@@ -215,7 +220,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Find and returns an user by ID.
      *
-     * @param string $id
+     * @param string $id User ID
      * 
      * @throws Error If Customer or Shopkeeper were not found.
      * @return User
@@ -260,7 +265,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Notifies the payee with an SMS message about the transaction.
      *
-     * @param  mixed $payee
+     * @param User $payee Payee model instance
      * 
      * @return void
      */
