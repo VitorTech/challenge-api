@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->uuid('payer_id');
             $table->uuid('payee_id');
             $table->float('value', 8, 2);
-            $table->string('status');
+            $table->enum('status', ['TRANSACTION_SUCCEEDED', 'TRANSACTION_FAILED']);
             
             $table->timestamps();
 

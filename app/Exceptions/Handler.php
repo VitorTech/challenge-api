@@ -10,6 +10,11 @@ use Laravel\Passport\Exceptions\OAuthServerException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
+/**
+ * Application exceptions handler class.
+ * 
+ * @author vitorg_s@hotmail.com <vitorg_s@hotmail.com>
+ */
 class Handler extends ExceptionHandler
 {
     /**
