@@ -198,6 +198,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * Handle the transfer status response
      *
      * @param  mixed $response
+     * 
      * @return string
      */
     private function _handleTransferStatusResponse($response): string
@@ -260,6 +261,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      * Notifies the payee with an SMS message about the transaction.
      *
      * @param  mixed $payee
+     * 
      * @return void
      */
     private function _notifyPayee(User $payee): void
