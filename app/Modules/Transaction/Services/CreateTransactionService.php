@@ -98,7 +98,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     }
     
     /**
-     * Discounts a determined value from especific payer balance.
+     * Discounts a determined value from especific user balance.
      *
      * @param  mixed $payer
      * @param  mixed $value
@@ -110,7 +110,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     }
     
     /**
-     * Increment a determined value to specific payer balance.
+     * Increment a determined value to specific user balance.
      *
      * @param  mixed $payee
      * @param  mixed $value
