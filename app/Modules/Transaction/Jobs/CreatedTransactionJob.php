@@ -19,7 +19,7 @@ class CreatedTransactionJob extends Job
      * @param  mixed $payee
      * @return void
      */
-    public function __construct(User $payee) 
+    public function __construct() 
     {
         //
     }
