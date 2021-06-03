@@ -19,6 +19,7 @@ class TransactionController extends Controller
      * Store a transaction in storage.
      *
      * @param  mixed $request
+     * 
      * @return Transaction
      */
     public function store(CreateTransactionRequest $request): Transaction
