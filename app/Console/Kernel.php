@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        ModuleMakeCommand::class,
         RouteListCommand::class
     ];
 

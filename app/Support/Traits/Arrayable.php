@@ -6,12 +6,12 @@ trait Arrayable
 {
     public function end(string $delimiter = ',', string $string)
     {
-        $explode_string = explode($delimiter, $string);
+        $explodeString = explode($delimiter, $string);
 
-        if (getType($explode_string) != 'array') {
+        if (getType($explodeString) != 'array') {
             return $string;
         }
 
-        return end($explode_string);
+        return end($explodeString);
     }
 }
