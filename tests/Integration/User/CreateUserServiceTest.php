@@ -19,7 +19,7 @@ class CreateUserServiceTest extends TestCase
 
         $user = User::factory()->make()->toArray();
 
-        $user['email'] = $faker->unique()->safeEmail;
+        $user['email'] = $faker->unique()->freeEmail;
         $user['document'] = $faker->numerify('###########');
         $user['password'] = Str::random(8);
 
