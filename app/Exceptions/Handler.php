@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Laravel\Passport\Exceptions\OAuthServerException;
+use Illuminate\Auth\AuthenticationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
@@ -46,7 +47,9 @@ class Handler extends ExceptionHandler
 
     protected function getStatusCode(Throwable $exception)
     {
-        if ($exception instanceof OAuthServerException) {
+        if ($exception instanceof OAuthServerException 
+            || $exception instanceof AuthenticationException
+        ) {
             return 401;
         }
 

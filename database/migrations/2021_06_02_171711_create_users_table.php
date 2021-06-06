@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('type', ['customer', 'shopkeeper']);
             $table->float('balance', 8, 2);
-            $table->string('token')->nullable(true);
 
             $table->timestamps();
             $table->softDeletes();
