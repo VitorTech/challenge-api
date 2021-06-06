@@ -47,7 +47,7 @@ class UpdateTransactionService implements ServiceInterface
             !$this->parameters["transaction"] instanceof Transaction
         ) {
             throw new Error(
-                "The transaction is required and must to be instance of Transaction"
+                "Transaction is required and must to be an instance of Transaction"
             );
         }
 
@@ -55,13 +55,18 @@ class UpdateTransactionService implements ServiceInterface
             throw new Error("The attributes are required");
         }
 
-        $validator = Validator::make($this->parameters["attributes"], [
-            "name" => "required",
-        ]);
+        $validator = Validator::make(
+            $this->parameters['attributes'], 
+            [
+                'payer' => 'required|string|exists:users,id',
+                'payee' => 'required|string|exists:users,id',
+                'value' => 'required|numeric|min:0'
+            ]
+        );
 
         if ($validator->fails()) {
             throw new Error(
-                "The " . $validator->errors()->first() . " is incorrect"
+                $validator->errors()->first(), 422
             );
         }
     }

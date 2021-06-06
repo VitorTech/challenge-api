@@ -47,7 +47,7 @@ class UpdateUserService implements ServiceInterface
             !$this->parameters["user"] instanceof User
         ) {
             throw new Error(
-                "The user is required and must to be instance of User"
+                "The user is required and must to be an instance of User"
             );
         }
 
@@ -56,12 +56,15 @@ class UpdateUserService implements ServiceInterface
         }
 
         $validator = Validator::make($this->parameters["attributes"], [
-            "name" => "required",
+            'fullname' => 'required',
+            'email' => 'required',
+            'document' => 'required',
+            'type' => 'required'
         ]);
 
         if ($validator->fails()) {
             throw new Error(
-                "The " . $validator->errors()->first() . " is incorrect"
+                $validator->errors()->first()
             );
         }
     }
