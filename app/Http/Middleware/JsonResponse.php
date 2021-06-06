@@ -25,7 +25,10 @@ class JsonResponse
         $response = $next($request);
         $statusCode = $response->getStatusCode();
 
-        if ($request->method() == 'POST' && $statusCode == 200) {
+        if ($request->isMethod('post') 
+            && $statusCode == 200 
+            && !$request->has('grant_type')
+        ) {
             $statusCode = 201;
         }
         
