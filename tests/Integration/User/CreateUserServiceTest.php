@@ -6,7 +6,6 @@ use TestCase;
 use Illuminate\Support\Str;
 use App\Facades\ExecuteService;
 use App\Models\User;
-use Faker\Factory;
 use Modules\User\Services\CreateUserService;
 
 /**
@@ -15,7 +14,12 @@ use Modules\User\Services\CreateUserService;
  * @author Vitor Ferreira <vitorg_s@hotmail.com>
  */
 class CreateUserServiceTest extends TestCase
-{
+{    
+    /**
+     * Create user test function.
+     *
+     * @return void
+     */
     public function test_create_user()
     {
         $user = User::factory()->make()->toArray();

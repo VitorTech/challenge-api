@@ -10,7 +10,6 @@ use App\Models\User;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Services\CreateUserService;
 use Modules\User\Services\GetUserByIdService;
-use Faker\Factory;
 
 /**
  * Create user unit test suit
@@ -20,7 +19,7 @@ use Faker\Factory;
 class CreateUserServiceTest extends TestCase
 {       
     /**
-     * Function which tests a user storage resource.
+     * Create user test function.
      *
      * @return void
      */

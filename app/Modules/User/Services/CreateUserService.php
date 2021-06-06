@@ -35,7 +35,7 @@ class CreateUserService implements CreateUserServiceInterface
     /**
      * Define service parameters
      *
-     * @param  mixed $_parameters
+     * @param  mixed $parameters
      * @return void
      */
     public function setParameters(array $parameters = []): void
@@ -71,7 +71,7 @@ class CreateUserService implements CreateUserServiceInterface
             $attributes, 
             [
                 'fullname' => 'required',
-                'email' => 'required|email:filter,rfc,dns|unique:users',
+                'email' => 'required|email:rfc,dns|unique:users',
                 'document' => 'required|unique:users',
                 'password' => 'required',
                 'type' => 'required'
