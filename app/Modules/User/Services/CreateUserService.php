@@ -71,7 +71,7 @@ class CreateUserService implements CreateUserServiceInterface
             $attributes, 
             [
                 'fullname' => 'required',
-                'email' => 'required|email:rfc,dns|unique:users',
+                'email' => 'required|email:filter,rfc,dns|unique:users',
                 'document' => 'required|unique:users',
                 'password' => 'required',
                 'type' => 'required'
