@@ -7,20 +7,18 @@ use Illuminate\Support\Str;
 use App\Facades\ExecuteService;
 use App\Models\User;
 use Faker\Factory;
-use Laravel\Lumen\Testing\DatabaseTransactions;
 use Modules\User\Services\CreateUserService;
 
+/**
+ * Create user integration test suit
+ * 
+ * @author Vitor Ferreira <vitorg_s@hotmail.com>
+ */
 class CreateUserServiceTest extends TestCase
 {
-
     public function test_create_user()
     {
-        $faker = Factory::create();
-
         $user = User::factory()->make()->toArray();
-
-        $user['email'] = $faker->unique()->freeEmail;
-        $user['document'] = $faker->numerify('###########');
         $user['password'] = Str::random(8);
 
         ExecuteService::execute(

@@ -29,8 +29,8 @@ class UserFactory extends Factory
         return [
             'id' => Str::uuid(),
             'fullname' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'document' => $this->faker->numerify('###########'),
+            'email' => $this->faker->unique()->freeEmail,
+            'document' => $this->faker->unique()->numerify('###########'),
             'type' => 'customer',
             'balance' => 50000
         ];

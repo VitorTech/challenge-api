@@ -13,7 +13,9 @@ use Modules\User\Services\GetUserByIdService;
 use Faker\Factory;
 
 /**
- * Create user service test suit
+ * Create user unit test suit
+ * 
+ * @author Vitor Ferreira <vitorg_s@hotmail.com>
  */
 class CreateUserServiceTest extends TestCase
 {       
@@ -23,14 +25,9 @@ class CreateUserServiceTest extends TestCase
      * @return void
      */
     public function test_create_user()
-    {
-
-        $faker = Factory::create();
-            
+    {            
         $user_data = User::factory()->make()->toArray();
 
-        $user_data['email'] = $faker->unique()->freeEmail;
-        $user_data['document'] = $faker->numerify('###########');
         $user_data['password'] = Str::random(8);
 
         $user = ExecuteService::execute(
