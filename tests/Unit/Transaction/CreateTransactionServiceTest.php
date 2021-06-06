@@ -3,9 +3,7 @@
 namespace Tests\Unit\Transaction;
 
 use TestCase;
-use Illuminate\Support\Str;
 use App\Facades\ExecuteService;
-use Modules\Transaction\Repositories\Contracts\FakeTransactionRepositoryInterface;
 use Modules\Transaction\Repositories\TransactionRepository;
 use Modules\Transaction\Services\CreateTransactionService;
 use Modules\Transaction\Services\GetTransactionByIdService;
@@ -19,7 +17,6 @@ class CreateTransactionServiceTest extends TestCase
      */
     public function test_create_transaction()
     {
-
         $payer_id = 'f36443bb-15bf-41f4-8e52-71183a4065a6';
         $payee_id = '4c8d5b2b-6ce1-4824-9f61-a65864f7bc5a';
 

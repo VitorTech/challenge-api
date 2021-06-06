@@ -8,7 +8,7 @@ use App\Models\Transaction;
 class TransactionTest extends TestCase
 {    
     /**
-     * Fillable comparing test.
+     * Fillable comparison test function.
      *
      * @return void
      */

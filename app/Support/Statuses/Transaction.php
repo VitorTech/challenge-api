@@ -3,7 +3,7 @@
 namespace App\Support\Statuses;
 
 /**
- * Transaction available statuses class.
+ * Available transaction statuses class.
  * 
  * @author Vitor Ferreira <vitorg_s@hotmail.com>
  */

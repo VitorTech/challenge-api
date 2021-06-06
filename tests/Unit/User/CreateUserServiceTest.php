@@ -6,18 +6,19 @@ use TestCase;
 use Illuminate\Support\Str;
 use App\Facades\ExecuteService;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 use Modules\User\Repositories\UserRepository;
-use Modules\User\Services\Contracts\CreateUserServiceInterface;
 use Modules\User\Services\CreateUserService;
 use Modules\User\Services\GetUserByIdService;
 use Faker\Factory;
 
+/**
+ * Create user service test suit
+ */
 class CreateUserServiceTest extends TestCase
 {       
     /**
-     * Function which tests user store.
+     * Function which tests a user storage resource.
      *
      * @return void
      */
@@ -62,7 +63,5 @@ class CreateUserServiceTest extends TestCase
 
         $this->assertEquals($user_data['type'], $find_user->type);
         $this->assertEquals($user_data['balance'], $find_user->balance);
-
-
     }
 }
