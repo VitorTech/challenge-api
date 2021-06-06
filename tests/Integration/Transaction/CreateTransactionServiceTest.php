@@ -3,7 +3,6 @@
 namespace Tests\Integration\Transaction;
 
 use TestCase;
-use Illuminate\Support\Str;
 use App\Facades\ExecuteService;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Modules\Transaction\Services\CreateTransactionService;
