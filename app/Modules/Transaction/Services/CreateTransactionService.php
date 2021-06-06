@@ -42,7 +42,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Set service repository
      *
-     * @param mixed $_repository ServiceRepository
+     * @param mixed $repository Service repository instance
      * 
      * @return void
      */
@@ -54,7 +54,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     /**
      * Set service parameters
      *
-     * @param mixed $_parameters ServiceParameters
+     * @param mixed $parameters Service parameters instance
      * 
      * @return void
      */
@@ -100,7 +100,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     }
     
     /**
-     * Discounts a determined value from especific user balance.
+     * Discounts a given value from especific user balance.
      *
      * @param User  $payer $payer model instance
      * @param float $value Value to decrement
@@ -113,7 +113,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     }
     
     /**
-     * Increment a determined value to specific user balance.
+     * Increment a given value to specific user balance.
      *
      * @param User  $payee Payee model instance 
      * @param float $value Value to increment
