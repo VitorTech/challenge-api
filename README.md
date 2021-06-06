@@ -25,4 +25,5 @@
 
 ## Running Tests
 
+-   `docker exec -it challenge-api bash -c "zsh"`
 -  `./vendor/bin/phpunit`
