@@ -51,6 +51,7 @@ class JsonResponse
         $data->status_code = $statusCode;
 
         $response->setContent(json_encode($data));
+        $response->setStatusCode($statusCode);
 
         return $response;
     }
