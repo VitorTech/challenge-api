@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\UsesUuid;
 use App\Models\Traits\UsesSerializeDates;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Transaction extends Model
 {
-    use SoftDeletes, UsesUuid, UsesSerializeDates;
+    use UsesUuid, UsesSerializeDates, HasFactory, SoftDeletes;
 
     protected $table = 'transactions';
 

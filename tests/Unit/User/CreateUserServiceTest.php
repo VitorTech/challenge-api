@@ -5,41 +5,48 @@ namespace Tests\Unit\User;
 use TestCase;
 use Illuminate\Support\Str;
 use App\Facades\ExecuteService;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Modules\User\Repositories\Contracts\FakeUserRepositoryInterface;
+
+use Modules\User\Repositories\UserRepository;
 use Modules\User\Services\Contracts\CreateUserServiceInterface;
+use Modules\User\Services\CreateUserService;
 use Modules\User\Services\GetUserByIdService;
+use Faker\Factory;
 
 class CreateUserServiceTest extends TestCase
-{
+{       
+    /**
+     * Function which tests user store.
+     *
+     * @return void
+     */
     public function test_create_user()
     {
-        $uuid = Str::uuid();
-        
-        $user_data = [
-            'id' => $uuid,
-            'fullname' => 'Neil Fraser',
-            'email' => 'neil.fraser@universe.com',
-            'password' => 'neil.password',
-            'document' => '35842800870',
-            'type' => 'customer',
-        ];
+
+        $faker = Factory::create();
+            
+        $user_data = User::factory()->make()->toArray();
+
+        $user_data['email'] = $faker->unique()->safeEmail;
+        $user_data['document'] = $faker->numerify('###########');
+        $user_data['password'] = Str::random(8);
 
         $user = ExecuteService::execute(
             service:
-            CreateUserServiceInterface::class,
+            CreateUserService::class,
             parameters:
             [
-                "attributes" => $user_data
+                'attributes' => $user_data
             ],
             repository:
-            FakeUserRepositoryInterface::class
+            UserRepository::class
         );
 
         $find_user = ExecuteService::execute(
             service: GetUserByIdService::class,
             parameters: ['id' => $user->id],
-            repository: FakeUserRepositoryInterface::class
+            repository: UserRepository::class
         );
 
         $this->assertArrayHasKey('id', $find_user->getAttributes());
@@ -49,12 +56,13 @@ class CreateUserServiceTest extends TestCase
         $this->assertArrayHasKey('password', $find_user->getAttributes());
         $this->assertArrayHasKey('type', $find_user->getAttributes());
 
-        $this->assertEquals('id', $uuid);
-        $this->assertEquals('fullname', $user_data['fullname']);
-        $this->assertEquals('email', $user_data['email']);
-        $this->assertEquals('document', $user_data['document']);
-        $this->assertEquals('password', Hash::make('neil.password'));
-        $this->assertEquals('type', $user_data['type']);
+        $this->assertEquals($user_data['fullname'], $find_user->fullname);
+        $this->assertEquals($user_data['email'], $find_user->email);
+        $this->assertEquals($user_data['document'], $find_user->document);
+
+        $this->assertEquals($user_data['type'], $find_user->type);
+        $this->assertEquals($user_data['balance'], $find_user->balance);
+
 
     }
 }

@@ -5,42 +5,43 @@ namespace Tests\Integration\User;
 use TestCase;
 use Illuminate\Support\Str;
 use App\Facades\ExecuteService;
+use App\Models\User;
+use Faker\Factory;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Modules\User\Services\Contracts\CreateUserServiceInterface;
+use Modules\User\Services\CreateUserService;
 
 class CreateUserServiceTest extends TestCase
 {
-    use DatabaseTransactions;
 
     public function test_create_user()
     {
-        $uuid = Str::uuid();
+        $faker = Factory::create();
 
-        $user = [
-            'id' => $uuid,
-            'fullname' => 'Neil Fraser',
-            'email' => 'neil.fraser@universe.com',
-            'password' => 'neil.password',
-            'document' => '35842800870',
-            'type' => 'customer'
-        ];
+        $user = User::factory()->make()->toArray();
+
+        $user['email'] = $faker->unique()->safeEmail;
+        $user['document'] = $faker->numerify('###########');
+        $user['password'] = Str::random(8);
 
         ExecuteService::execute(
             service:
-            CreateUserServiceInterface::class,
+            CreateUserService::class,
             parameters:
             [
-                "attributes" => $user,
+                'attributes' => $user,
             ],
         );
 
-        $this->seeInDatabase("users", [
-            'id' => $uuid,
-            'fullname' => 'Neil Fraser',
-            'email' => 'neil.fraser@universe.com',
-            'password' => 'neil.password',
-            'document' => '35842800870',
-            'type' => 'customer'
-        ]);
+        $this->seeInDatabase(
+            'users', 
+            [
+                'id' => $user['id'],
+                'fullname' => $user['fullname'],
+                'email' => $user['email'],
+                'document' => $user['document'],
+                'type' => $user['type'],
+                'balance' => $user['balance']
+            ]
+        );
     }
 }

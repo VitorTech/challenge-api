@@ -257,7 +257,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
 
         if ($validator->fails()) {
             throw new Error(
-                "The " . $validator->errors()->first() . " is incorrect", 422
+                $validator->errors()->first(), 422
             );
         }
     }

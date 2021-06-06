@@ -22,3 +22,7 @@
 -   `php artisan migrate --seed`
 -   `php artisan passport:install`
 -   `service supervisor start`
+
+## Running Tests
+
+-  `./vendor/bin/phpunit`

@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
                 'password' => 'neil.password',
                 'document' => '35842800870',
                 'type' => 'customer',
-                'balance' => 5000.00
+                'balance' => 10000.00
             ],
             [
                 'id' => '4c8d5b2b-6ce1-4824-9f61-a65864f7bc5a',

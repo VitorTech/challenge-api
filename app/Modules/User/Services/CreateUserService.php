@@ -50,11 +50,15 @@ class CreateUserService implements CreateUserServiceInterface
      */
     public function execute(): mixed
     {
-        $this->validateParameters();
+        $attributes = $this->parameters['attributes'];
+
+        if (!isset($attributes['is_request'])) {
+            $this->validateParameters();
+        }
 
         $password = $this->parameters['attributes']['password'] ?? Str::random(8);
 
-        $attributes = $this->setAttibutes($password);
+        $attributes = $this->setPasswordAttribute($password);
 
         return $this->repository->create($attributes);
     }
@@ -76,18 +80,18 @@ class CreateUserService implements CreateUserServiceInterface
 
         if ($validator->fails()) {
             throw new Error(
-                'The ' . $validator->errors()->first() . ' is incorrect'
+                $validator->errors()->first()
             );
         }
     }
     
     /**
-     * Handle service attributes
+     * Changes attributes and put password.
      *
      * @param  mixed $password
      * @return array
      */
-    private function setAttibutes(string $password): array
+    private function setPasswordAttribute(string $password): array
     {
         $attributes = $this->parameters['attributes'];
 

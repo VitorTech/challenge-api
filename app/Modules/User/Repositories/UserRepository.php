@@ -6,10 +6,13 @@ use App\Models\User;
 use App\Support\BaseRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\User\Repositories\Contracts\UserRepositoryInterface;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
+    use HasFactory;
+    
     /**
      * @var [Model]
      */

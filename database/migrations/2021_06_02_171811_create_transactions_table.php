@@ -21,6 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->enum('status', ['TRANSACTION_SUCCEEDED', 'TRANSACTION_FAILED']);
             
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('payer_id')->references('id')->on('users');
             $table->foreign('payee_id')->references('id')->on('users');
