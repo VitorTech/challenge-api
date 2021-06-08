@@ -203,7 +203,7 @@ class CreateTransactionService implements CreateTransactionServiceInterface
     }
     
     /**
-     * Handle the transfer status response
+     * Handle the transfer status response.
      *
      * @param mixed $response Status Response
      * 
