@@ -70,8 +70,6 @@ class CreateTransactionService implements CreateTransactionServiceInterface
      */
     public function execute(): mixed
     {
-        DB::beginTransaction();
-
         $data = $this->parameters['attributes'];
 
         if (!isset($data['is_request'])) {
@@ -85,14 +83,19 @@ class CreateTransactionService implements CreateTransactionServiceInterface
 
         $this->checkCustomerBalance($payer, $data['value']);
 
-        $transaction = $this->createTransaction($payer, $payee, $data['value']);
-
-        if (isset($transaction['id'])) {
-            $this->decrementPayerBalance($payer, $data['value']);   
-            $this->incrementPayeeBalance($payee, $data['value']);   
-        }
-
-        DB::commit();
+        $transaction = DB::transaction(
+            function () use ($payer, $payee, $data) {
+        
+                $transaction = $this->createTransaction(
+                    $payer, $payee, $data['value']
+                );
+        
+                $this->decrementPayerBalance($payer, $data['value']);   
+                $this->incrementPayeeBalance($payee, $data['value']);   
+                
+                return $transaction;
+            }
+        );
 
         $this->notifyPayee();
 
