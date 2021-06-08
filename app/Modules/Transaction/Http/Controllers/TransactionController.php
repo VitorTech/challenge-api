@@ -22,7 +22,7 @@ class TransactionController extends Controller
      * 
      * @return Transaction
      */
-    public function store(CreateTransactionRequest $request): Transaction
+    public function store(CreateTransactionRequest $request): ?Transaction
     {
         return ExecuteService::execute(
             service: CreateTransactionService::class, 
